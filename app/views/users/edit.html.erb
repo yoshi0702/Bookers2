@@ -1,0 +1,24 @@
+<h2>User info</h2>
+
+<% if @user.errors.any? %>
+<p>error</p>
+<div class="alert alert-warning">
+  <ul>
+    <% @user.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+
+<% end %>
+
+<%= form_for(@user) do |f| %>
+<h4>Name</h4>
+    <%= f.text_field :name %>
+    <h4>Image</h4>
+    <%= f.attachment_field :profile_image,fallback:"no_image-ede28af4bad96368ef41be1b4be1cffce0d9402540f75d17895e32cb0d2af5e6.jpg" %>
+    <h4>Introductiopn</h4>
+    <%= f.text_field :introduction %>
+    <%= f.submit 'Update User' %>
+
+<% end %>

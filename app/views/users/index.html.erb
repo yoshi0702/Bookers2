@@ -1,0 +1,63 @@
+
+<div class="container">
+<div class="row">
+
+<div class="col-xs-3">
+<h1>User info</h1>
+<td><%= attachment_image_tag @user, :profile_image,:fill, 50, 50,fallback:"no_image-ede28af4bad96368ef41be1b4be1cffce0d9402540f75d17895e32cb0d2af5e6.jpg"  %></td>
+<h3>name</h3>
+<%= current_user.name %>
+<h3>introduction</h3>
+<%= current_user.introduction %>
+
+<%= link_to "", edit_user_path(current_user), class: "btn btn-default glyphicon glyphicon-wrench" %>
+
+<h1>New book</h1>
+
+<% if @book.errors.any? %>
+<p>error</p>
+<div class="alert alert-warning">
+  <ul>
+    <% @book.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+
+<%= form_for(@book) do |f| %>
+    <h4>Title</h4>
+    <%= f.text_field :title %>
+    <h4>Opinion</h4>
+    <%= f.text_field :body %>
+    <%= f.submit 'Create Book', class: "btn btn-default" %>
+<% end %>
+<%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
+</div>
+
+<div class="col-xs-9">  <!-- ここを追加 -->
+<h1>Users</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>image</th>
+      <th>name</th>
+    </tr>
+  </thead>
+
+  <tbody>
+  		<% @users.each do |user| %>
+  		<tr>
+  			<td><%= attachment_image_tag user, :profile_image, :fill, 50, 50,  format: 'jpeg', fallback:"no_image-ede28af4bad96368ef41be1b4be1cffce0d9402540f75d17895e32cb0d2af5e6.jpg"  %></td>
+  			<td><%= user.name %></td>
+  			<td><%= link_to "Show",user_path(user) %></td>
+      </tr>
+     	<% end %>
+  </tbody>
+
+</table>
+</div>                  <!-- ここを追加 -->
+ </div>  <!-- ここを追加 -->
+  </div>      <!-- ここを追加 -->
