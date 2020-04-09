@@ -48,6 +48,78 @@
   			<td><%=link_to @book.title %></td>
 			<td><%= @book.body %></td>
   		</tr>
+
+      <li>
+        <i class="fa fa-comment"></i>
+           <a href="#comments"><%= @book.book_comments.count %></a>
+      </li>
+      <div class="comment-list bt style-2" id="comments">
+         <div class="float-wrapper">
+        <h2 class="comment-count"><%= @book.book_comments.count %>件コメント</h2>
+      </div>
+      <ol>
+    <% @book.book_comments.each do |book_comment| %>
+        <li class="comment">
+            <div class="comment-body bb">
+                <div class="comment-avatar">
+                    <div class="avatar">
+                        <%= image_tag('no_image-ede28af4bad96368ef41be1b4be1cffce0d9402540f75d17895e32cb0d2af5e6.jpg', style: "width: 60px; height: 60px;") %>
+                    </div>
+                </div>
+                <div class="comment-text">
+                    <div class="comment-author clearfix">
+                        <a href="#" class="link-author"><%= book_comment.user.name %></a>
+                        <span class="comment-meta">
+                          <span class="comment-date"><%= book_comment.created_at.strftime('%Y/%m/%d') %></span>
+                        </span>
+                    </div>
+                    <!-- ここから -->
+                      <% if @book.favorited_by?(current_user) %>
+                        <li>
+                          <%= link_to book_favorites_path(@book), method: :delete do %>
+                            <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
+                            <%= @book.favorites.count %> いいね
+                          <% end %>
+                        </li>
+                      <% else %>
+                        <li>
+                          <%= link_to book_favorites_path(@book), method: :post do %>
+                            <i class="fa fa-heart-o" aria-hidden="true"></i>
+                            <%= @book.favorites.count %> いいね
+                          <% end %>
+                        </li>
+                      <% end %>
+                    <!-- ここまで -->
+                    <div class="comment-entry"><%= book_comment.body %></div>
+                    <%= link_to "destroy", book_book_comments_path(book_comment.id), method: :delete %>
+                </div>
+            </div>
+        </li>
+    <% end %>
+</ol>
+
+<% if @book_comment.errors.any? %>
+<p>error</p>
+<div class="alert alert-warning">
+  <ul>
+    <% @book_comment.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+
+<% end %>
+<!-- <form class="mt-20"> -->
+<%= form_for [@book, @book_comment] do |f| %>
+    <div class="row">
+        <div class="col-sm-12">
+            <%= f.text_area :body, rows:'5', class: "form-control",placeholder: "コメントをここに" %>
+        </div>
+    </div>
+    <%= f.submit "送信する", class: "btn btn-lg btn-base-1 mt-20 pull-right" %>
+<% end %>
+<!-- </form> -->
+
   		<% if @book.user == current_user %>
 <%= link_to "Edit",edit_book_path(@book.id) %>
 <%= link_to "Destroy",book_path(@book.id),method: :delete %>

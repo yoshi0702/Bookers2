@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
 has_many :books
+has_many :book_comments
 attachment :profile_image
 validates :name, length: { in: 2..20 }
 validates :introduction, length: { maximum: 50 }

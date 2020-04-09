@@ -36,9 +36,9 @@ before_action :correct_user,   only: [:edit, :update]
     	if @user.update(user_params)
         flash[:notice] = "successfully"
     	redirect_to user_path(@user)
-    else
+        else
         render :edit
-    end
+        end
 
 
     end
